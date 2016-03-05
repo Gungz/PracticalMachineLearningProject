@@ -48,8 +48,13 @@ modelGBM <- train(classe~., data=trainDataFiltered, trControl=train_control, met
 
 The accuracy for RPart model is  __`r modelRPart$results$Accuracy[which.max(modelRPart$results$Accuracy)]`__ <br />
 The accuracy for LDA model is  __`r modelLDA$results$Accuracy[which.max(modelLDA$results$Accuracy)]`__ <br />
-The accuracy for GBM model is  __0.966__
+The accuracy for GBM model is  __0.9635106__
 
 <br />
 
 From above accuracy, it can be seen that the best model to use for this classification project is "GBM" model.
+
+<br/>
+
+## Prediction Result
+To respect Coursera Honor Code, prediction result with "GBM" model is not published here but directly to Coursera Quiz Submission.

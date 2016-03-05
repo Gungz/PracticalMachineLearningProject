@@ -99,9 +99,14 @@ set.seed(3233)
 modelLDA &lt;- train(classe~., data=trainDataFiltered, trControl=train_control, method=&quot;lda&quot;)</code></pre>
 <p>Due to limitation in processor and specification of writer’s virtual machine, below command if run in Rmd file makes the Rmd unable to compile the HTML. Hence, the command is shown below (outside r command block): <br /> <br /> set.seed(3233) <br /> modelGBM &lt;- train(classe~., data=trainDataFiltered, trControl=train_control, method=“gbm”, verbose=FALSE)</p>
 <p><br /></p>
-<p>The accuracy for RPart model is <strong>0.5135559</strong> <br /> The accuracy for LDA model is <strong>0.7014063</strong> <br /> The accuracy for GBM model is <strong>0.966</strong></p>
+<p>The accuracy for RPart model is <strong>0.5135559</strong> <br /> The accuracy for LDA model is <strong>0.7014063</strong> <br /> The accuracy for GBM model is <strong>0.9635106</strong></p>
 <p><br /></p>
 <p>From above accuracy, it can be seen that the best model to use for this classification project is “GBM” model.</p>
+<p><br /></p>
+</div>
+<div id="prediction-result" class="section level2">
+<h2>Prediction Result</h2>
+<p>To respect Coursera Honor Code, prediction result with “GBM” model is not published here but directly to Coursera Quiz Submission.</p>
 </div>
 
 
