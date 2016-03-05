@@ -1,0 +1,55 @@
+---
+title: "Practical Machine Learning Assignment"
+author: "So Agung Sidharta"
+date: "02/28/2016"
+output: html_document
+---
+
+<br/>
+
+## Downloading and Loading the data
+```{r download_and_load_data, echo=TRUE}
+download.file(url = "https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv", method = "curl", destfile = "pml-training.csv")
+download.file(url = "https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv", method = "curl", destfile = "pml-testing.csv")
+
+trainData<-read.csv("pml-training.csv", header = TRUE)
+
+testData<-read.csv("pml-testing.csv", header = TRUE)
+```
+
+<br/>
+
+## Filtering the training data
+According to instructions of assignment and after exploring the data, we should use variables in the data set that contain __belt__, __forearm__, __arm__, and __dumbbell__ in the name of the variables. We should also exclude variables that contain majority of NA and empty values from the data set.
+```{r filtering_data, echo=TRUE}
+trainDataFiltered<-trainData[,names(trainData)[grep('(belt|dumbbell|arm|forearm)',names(trainData))]]
+trainDataFiltered$classe<-trainData$classe
+trainDataFiltered[trainDataFiltered==""]<-NA
+trainDataFiltered<-trainDataFiltered[,colSums(is.na(trainDataFiltered))<dim(trainDataFiltered)[1]/2]
+```
+
+<br/>
+
+## Building Model, Cross Validation, and Choosing Model
+For sake of simplicity, we are not doing further variable (predictor) selection by looking at correlation or doing PCA to make variable with high correlation sort of combined. We will, however, build classification model using 3 different algorithms ("rpart", "lda", "gbm"), do cross validation, and compare the accuracy as out of sample error among the models to select the best model that will be used to do prediction. 
+```{r model_building_and_cross_validation, echo=TRUE, cache=TRUE}
+require(caret)
+set.seed(3233)
+train_control <- trainControl(method="cv", number=5)
+modelRPart <- train(classe~., data=trainDataFiltered, trControl=train_control, method="rpart")
+set.seed(3233)
+modelLDA <- train(classe~., data=trainDataFiltered, trControl=train_control, method="lda")
+```
+Due to limitation in processor and specification of writer's virtual machine, below command if run in Rmd file makes the Rmd unable to compile the HTML. Hence, the command is shown below (outside r command block): <br /> <br />
+set.seed(3233) <br />
+modelGBM <- train(classe~., data=trainDataFiltered, trControl=train_control, method="gbm", verbose=FALSE)
+
+<br /> 
+
+The accuracy for RPart model is  __`r modelRPart$results$Accuracy[which.max(modelRPart$results$Accuracy)]`__ <br />
+The accuracy for LDA model is  __`r modelLDA$results$Accuracy[which.max(modelLDA$results$Accuracy)]`__ <br />
+The accuracy for GBM model is  __0.966__
+
+<br />
+
+From above accuracy, it can be seen that the best model to use for this classification project is "GBM" model.
